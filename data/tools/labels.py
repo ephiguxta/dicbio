@@ -18,18 +18,27 @@ try:
         # Caso comum da finalização de uma sentença, com as letras
         # geralmente minúsculas seguida por um ponto, que logo após o
         # ponto se inicia outra sentença com a primeira letra maiúscula
-        text = re.sub(r'(([A-Z]|)[a-z]+\.)\s([A-Z]+)', r'\1</s> \3', text)
+        text = re.sub(r'(([A-Z]|)[a-z]+\.) ([A-Z](|[a-z]+))',
+                      r'\1</s> \3', text)
 
         # Procura pelo caso anterior, pois a outra sentença que se inicia
         # precisa de um marcador <s>
-        text = re.sub(r'(\.<\/s>\s)(([A-Z]|)[a-z]+)', r'\1 <s>\2', text)
+        text = re.sub(r'(\.<\/s> )([A-Z](|[a-z]+))',
+                      r'\1 <s>\2', text)
 
         # Agora procuramos pelos casos mais óbvios, em que o ponto é o
         # último caractere da linha.
-        text = re.sub(r'([A-Za-z]\.)$', r'\1</s>', text)
+        text = re.sub(r'(([A-Z]|)[a-z]{2,}\.)\s',
+                      r'\1</s>\n', text)
 
+        f.close()
 
-        print(text)
+        try:
+            with open(filename, 'w') as new_file:
+                print(text, file = new_file)
+
+        except OSError:
+            print("Erro!")
 
 except OSError:
     print("Erro!")
