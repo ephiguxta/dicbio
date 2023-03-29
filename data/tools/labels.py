@@ -2,13 +2,22 @@
 
 import re
 
-# TODO:
-#       Faça um loop para iterar em todas as folhas, textos que são
-#       gerados pelo OCR.
-filename = 'page.txt'
+from os import listdir
+from os import path
 
-try:
-    with open(filename, 'r') as f:
+# Pega todas as páginas que estão em TXTs separados e atribui a
+# uma lista.
+pages_dir_path = '../Compendio_Botanica_Vol2/Capítulo_1/'
+pages = listdir(pages_dir_path)
+
+for i in pages:
+
+    # Evita os diretórios
+    if not path.isfile(pages_dir_path + i):
+        print('not file')
+        continue
+
+    with open(pages_dir_path + i, 'r') as f:
         text = f.read()
 
         # TODO:
@@ -31,14 +40,7 @@ try:
         text = re.sub(r'(([A-Z]|)[a-z]{2,}\.)\s',
                       r'\1</s>\n', text)
 
-        f.close()
+        treated_text = pages_dir_path + i[0:1] + '_tratado.txt'
 
-        try:
-            with open(filename, 'w') as new_file:
-                print(text, file = new_file)
-
-        except OSError:
-            print("Erro!")
-
-except OSError:
-    print("Erro!")
+        with open(treated_text, 'w') as new_file:
+            print(text, file = new_file)
