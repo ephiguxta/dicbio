@@ -1,48 +1,55 @@
 #!/usr/bin/python3
 
-# TODO:
-#   Essa versão se trata de um esboço que utiliza a ideia de script, algo
-#   sequencial sem modularização, assim que for alcançado a funcionalidade
-#   básica do programa, modularize alguns trechos.
+from re import findall
+from re import sub
 
-import re
+from os import listdir
+from os import path
+from os import makedirs
 
-filename = '../compendio1brotero.xml'
+# Pega todas as páginas que estão em TXTs separados e atribui a
+# uma lista.
+pages_dir_path = '../Compendio_Botanica_Vol2/Capítulo_1/'
+pages = listdir(pages_dir_path)
 
 output_dir = 'words_in_order'
 
-# TODO:
-# como esse script vai servir para mais de um livro,
-# pense em outra forma de atribuir o nome ao diretório gerado.
-actual_book = 'compendio_de_botanica'
-
-try:
-    with open(filename, 'r') as f:
-        entire_book = f.read()
+for i in pages:
+    with open(pages_dir_path + i, 'r') as file:
+        entire_page = file.read()
 
         # Iterando de A a Z para ordenar as palavras
         for i in range(ord('a'), ord('z')):
-            # Esse regex exige que a palavra seja no mínimo da seguinte forma:
-            #   [A-Za-z] _ _ _
-            # A palavra deve conter no mínimo 4 letras.
-            # Também deve conter um espaço ou quebra de linha após a palavra
-            #
-            # TODO:
-            #   Verifique se a ideia tornar a regex Case-Insensitive é
-            #   realmente algo plausível.
-            words = re.findall(r"\b%s[a-z]{3,}(?=\s)" % chr(i), entire_book,
-                               re.IGNORECASE)
 
-            try:
+            # "Religando" as palavras que são separadas por hífen quando
+            # estão no final de uma linha e sua continuação fica na linha
+            # abaixo.
+            words = sub(r'([a-z]+)\-\s([a-z]+)(,| )',
+                        r'\1\2\3\n',
+                        entire_page)
+
+            # Esse regex exige que a palavra seja no mínimo da seguinte forma:
+            #
+            # [Ll][a-z] _ _
+            # (Sendo 'L' a letra em maiúscula e 'l' minúscula)
+            #
+            # A palavra deve conter no mínimo 4 letras.
+            # Também deve conter um espaço, quebra de linha ou vírgula
+            # após a palavra
+            #
+            words = findall(r"\b[%s%s][a-z]{3,}(?=\s)" % (chr(i - 32), chr(i)),
+                            words)
+
+            if str(words) != '[]':
+                # Caso o diretório onde ficarão os arquivos [a-z].txt
+                # não exista, crie um.
+                words_dir = pages_dir_path + output_dir
+                if not path.exists(words_dir):
+                    makedirs(words_dir)
+
                 # Criando o caminho para o arquivo que será armazenado as
                 # palavras com a mesma letra inicial.
-                newfile = output_dir + '/' + chr(i) + '.txt'
+                newfile = words_dir + '/' + chr(i) + '.txt'
 
-                with open(newfile, 'w') as letter_text:
+                with open(newfile, 'a') as letter_text:
                     print(*words, sep='\n', file = letter_text)
-
-            except OSError:
-                print("Erro!")
-
-except OSError:
-    print("Erro!")
