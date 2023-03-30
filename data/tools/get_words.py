@@ -18,6 +18,10 @@ for i in pages:
     with open(pages_dir_path + i, 'r') as file:
         entire_page = file.read()
 
+        if i == '3.txt':
+            print(i)
+            print(entire_page)
+
         # Iterando de A a Z para ordenar as palavras
         for i in range(ord('a'), ord('z')):
 

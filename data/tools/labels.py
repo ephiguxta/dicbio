@@ -14,7 +14,6 @@ for i in pages:
 
     # Evita os diretórios
     if not path.isfile(pages_dir_path + i):
-        print('not file')
         continue
 
     with open(pages_dir_path + i, 'r') as f:
@@ -28,19 +27,37 @@ for i in pages:
         # geralmente minúsculas seguida por um ponto, que logo após o
         # ponto se inicia outra sentença com a primeira letra maiúscula
         text = re.sub(r'(([A-Z]|)[a-z]+\.) ([A-Z](|[a-z]+))',
-                      r'\1</s> \3', text)
+                      r'\1</s> \3',
+                      text)
 
         # Procura pelo caso anterior, pois a outra sentença que se inicia
         # precisa de um marcador <s>
-        text = re.sub(r'(\.<\/s> )([A-Z](|[a-z]+))',
-                      r'\1 <s>\2', text)
+        text = re.sub(r'(\.<\/s>) ([A-Z](|[a-z]+))',
+                      r'\1 <s>\2',
+                      text)
 
-        # Agora procuramos pelos casos mais óbvios, em que o ponto é o
-        # último caractere da linha.
-        text = re.sub(r'(([A-Z]|)[a-z]{2,}\.)\s',
-                      r'\1</s>\n', text)
+        # Aqui não damos match com '&l.' e inserimos a tag </s> quando for
+        # final de linha.
+        text = re.sub(r'(([A-Z]|)(?<!&)[a-z]+\.)(\s)',
+                        r'\1</s>\3',
+                        text)
+
+        # Quando ocorre '(l).', padrão quando o texto está referenciando
+        # as notas de rodapé.
+        text = re.sub(r'(([A-Z]|)[a-z]+ )(\([a-z]\)\.)(\s)',
+                      r'\1\2\3</s>\4',
+                      text)
+
+        #
+        # text = re.sub(r'(([A-Z]|)[a-z]{2,}\.</s>\n)([A-Z][a-z]+)',
+        #              r'\1<s>\3',
+        #              text)
+
+        if i == '3.txt':
+            print(text)
+            exit(1)
 
         treated_text = pages_dir_path + i[0:1] + '_tratado.txt'
 
-        with open(treated_text, 'w') as new_file:
-            print(text, file = new_file)
+        #with open(treated_text, 'w') as new_file:
+        #    print(text, file = new_file)
