@@ -39,8 +39,14 @@ for i in pages:
         # Aqui não damos match com '&l.' e inserimos a tag </s> quando for
         # final de linha.
         text = re.sub(r'(([A-Z]|)(?<!&)[a-z]+\.)(\s)',
-                        r'\1</s>\3',
-                        text)
+                      r'\1</s>\3',
+                      text)
+
+        # Quando há uma sentença ou palavra dentro de um parêntese e termina
+        # com um ponto, insere </s>.
+        text = re.sub(r' (\((([A-Z]|)[a-z]+( |))+\)\.)(\s)',
+                      r' \1</s>\5',
+                      text)
 
         # Quando ocorre '(l).', padrão quando o texto está referenciando
         # as notas de rodapé.
@@ -48,16 +54,19 @@ for i in pages:
                       r'\1\2\3</s>\4',
                       text)
 
-        #
-        # text = re.sub(r'(([A-Z]|)[a-z]{2,}\.</s>\n)([A-Z][a-z]+)',
-        #              r'\1<s>\3',
-        #              text)
+        # Se houver na linha anterior a tag </s> e se existir um novo
+        # início de parágrafo na linha atual, insere <s>.
+        text = re.sub(r'(([A-Z]|)[a-z]+\.</s>\n)([A-Z][a-z]+)',
+                      r'\1<s>\3',
+                      text)
 
-        if i == '3.txt':
-            print(text)
-            exit(1)
+        # Há algumas páginas que possuem notas de rodapé, as notas geralmente
+        # começam com '(l)' sendo 'l' == [a-z]
+        text = re.sub(r'\n(\([a-z]\) )',
+                      r'\n<s>\1',
+                      text)
 
-        treated_text = pages_dir_path + i[0:1] + '_tratado.txt'
+        #treated_text = pages_dir_path + i[0:1] + '_tratado.txt'
 
         #with open(treated_text, 'w') as new_file:
         #    print(text, file = new_file)
