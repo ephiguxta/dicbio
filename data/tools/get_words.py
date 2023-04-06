@@ -18,10 +18,6 @@ for i in pages:
     with open(pages_dir_path + i, 'r') as file:
         entire_page = file.read()
 
-        if i == '3.txt':
-            print(i)
-            print(entire_page)
-
         # Iterando de A a Z para ordenar as palavras
         for i in range(ord('a'), ord('z')):
 
@@ -55,5 +51,7 @@ for i in pages:
                 # palavras com a mesma letra inicial.
                 newfile = words_dir + '/' + chr(i) + '.txt'
 
+                # TODO:
+                #   Evitar repetição de palavras.
                 with open(newfile, 'a') as letter_text:
                     print(*words, sep='\n', file = letter_text)
