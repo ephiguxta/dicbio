@@ -66,7 +66,7 @@ for i in pages:
                       r'\n<s>\1',
                       text)
 
-        #treated_text = pages_dir_path + i[0:1] + '_tratado.txt'
+        treated_text = pages_dir_path + i[0:1] + '_tratado.txt'
 
-        #with open(treated_text, 'w') as new_file:
-        #    print(text, file = new_file)
+        with open(treated_text, 'w+') as new_file:
+            print(text, file = new_file)
