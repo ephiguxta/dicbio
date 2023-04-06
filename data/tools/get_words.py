@@ -9,7 +9,7 @@ from os import makedirs
 
 # Pega todas as páginas que estão em TXTs separados e atribui a
 # uma lista.
-pages_dir_path = '../Compendio_Botanica_Vol2/Capítulo_1/'
+pages_dir_path = '../Compendio_Brotero_Vol2/Capítulo_1/'
 pages = listdir(pages_dir_path)
 
 output_dir = 'words_in_order'

@@ -7,7 +7,7 @@ from os import path
 
 # Pega todas as páginas que estão em TXTs separados e atribui a
 # uma lista.
-pages_dir_path = '../Compendio_Botanica_Vol2/Capítulo_1/'
+pages_dir_path = '../Compendio_Brotero_Vol2/Capítulo_1/'
 pages = listdir(pages_dir_path)
 
 for i in pages:
@@ -64,6 +64,13 @@ for i in pages:
         # começam com '(l)' sendo 'l' == [a-z]
         text = re.sub(r'\n(\([a-z]\) )',
                       r'\n<s>\1',
+                      text)
+
+        # As vezes um parágrafo se inicia com as vogais "a", "e" e "o". Como
+        # se trata de um caso que se fosse implementado em outras regex causaria
+        # muitos falsos-positivos, esse regex serve apenas para tratá-los.
+        text = re.sub(r'(.</s>\n)([AEO] (([A-Z]|)[a-z]{4,})+)',
+                      r'\1<s>\2',
                       text)
 
         treated_text = pages_dir_path + i[0:1] + '_tratado.txt'

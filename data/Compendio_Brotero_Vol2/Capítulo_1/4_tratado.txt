@@ -5,11 +5,11 @@ hermaphroditas, outras daõ flores masculinas e femi-
 ninas taõbem na mesma especie : no primeiro cazo
 as flores hermaphroditas ou tem os estames desape-
 gados entre si e juntamente do pistillo (a), ou ape-
-gados entre si ou ao pistillo (b).</s> Se os estames se
+gados entre si ou ao pistillo (b).</s> <s>Se os estames se
 achaõ desapegados, e saõ de comprimento indeter-
 minado (c), constituem as treze primeiras classes,
 que differem humas das outras pelo numero dos dictos
-estames, e seu lugar de insersaõ (d).</s> Na 1ª. classe ou
+estames, e seu lugar de insersaõ (d).</s> <s>Na 1ª. classe ou
 Monandria (e) as flores constaõ de hum so estame, na
 2ª. ou Diandria constaõ de dois, na 3ª. ou Triandria
 de tres, na 4ª. ou Tetrandria de quatro, na 5ª. ou
@@ -32,4 +32,5 @@ outros mais altos alternadamente como na Daphne.</s>
 (e)Os que dezejarem saber as etymologias Gregas dos nomes das
 Classes e Ordens podem consultar o Diccionario dos termos botanicos
 que ajuntei no fim deste Compendio.</s>
+
 
